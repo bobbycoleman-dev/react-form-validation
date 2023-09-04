@@ -1,36 +1,20 @@
 import { useReducer } from "react";
-
-const initialState = {
-	firstName: {
-		value: "",
-		error: null
-	},
-	lastName: {
-		value: "",
-		error: null
-	},
-	email: {
-		value: "",
-		error: null
-	}
-};
-
-function reducer(state, action) {
-	return {
-		...state,
-		[action.type]: action.payload
-	};
-}
+import { formReducer, INITIAL_STATE } from "../formReducer";
 
 const Form = () => {
-	const [state, dispatch] = useReducer(reducer, initialState);
+	const [state, dispatch] = useReducer(formReducer, INITIAL_STATE);
 
 	const handleChange = (e) => {
-		const { name, value } = e.target;
-		dispatch({
-			type: name,
-			payload: value
-		});
+		dispatch(
+			{
+				type: "CHANGE_INPUT",
+				payload: { name: e.target.name, value: e.target.value }
+			},
+			{
+				type: "INPUT_ERROR",
+				payload: { name: e.target.name, value: e.target.value }
+			}
+		);
 	};
 
 	return (
@@ -45,7 +29,6 @@ const Form = () => {
 						type="text"
 						name="firstName"
 						className="p-2 border w-full bg-slate-100 rounded"
-						value={state.firstName.value}
 						onChange={handleChange}
 					/>
 					{state.firstName.error ? <p className="text-red-500">{state.firstName.error}</p> : ""}
@@ -58,7 +41,6 @@ const Form = () => {
 						type="text"
 						name="lastName"
 						className="p-2 border w-full bg-slate-100 rounded"
-						value={state.lastName.value}
 						onChange={handleChange}
 					/>
 					{state.lastName.error ? <p className="text-red-500">{state.lastName.error}</p> : ""}
@@ -71,7 +53,6 @@ const Form = () => {
 						type="text"
 						name="email"
 						className="p-2 border w-full bg-slate-100 rounded"
-						value={state.email.value}
 						onChange={handleChange}
 					/>
 					{state.email.error ? <p className="text-red-500">{state.email.error}</p> : ""}
